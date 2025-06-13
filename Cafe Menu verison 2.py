@@ -1,0 +1,70 @@
+#Version 2 BDSC Cafe App
+
+import easygui
+
+# Separate food and drink menus
+food_menu = {
+    "pizza": 1.75,
+    "nachos": 1.50,
+    "popcorn": 2.00,
+    "fries": 2.50,
+    "chips": 1.00
+}
+
+drink_menu = {
+    "soda": 2.00,
+    "lemonade": 1.00
+}
+
+cart = []
+total = 0
+
+response = easygui.buttonbox("Welcome to BDSC Cafe App!\nWould you like to join?", choices=["Yes", "No"])
+
+if response == "Yes":
+    def show_menu():
+        menu_text = "-------- MENU -------------\n"
+        menu_text += "--- FOOD ---\n"
+        for item, price in food_menu.items():
+            menu_text += f"{item.title():10} : ${price:.2f}\n"
+        menu_text += "\n--- DRINKS ---\n"
+        for item, price in drink_menu.items():
+            menu_text += f"{item.title():10} : ${price:.2f}\n"
+        menu_text += "---------------------------"
+        easygui.msgbox(menu_text)
+
+    show_menu()
+
+    while True:
+        food = easygui.enterbox("Type an item to order.\nType 'menu' to view menu again or 'done' to finish:").strip().lower()
+
+        if food == "done":
+            break
+        elif food == "menu":
+            show_menu()
+        elif food in food_menu or food in drink_menu:
+            cart.append(food)
+        else:
+            easygui.msgbox("Sorry, that item is not on the menu.")
+
+    if cart:
+        order_summary = "------- YOUR ORDER -------\n"
+        for item in cart:
+            if item in food_menu:
+                price = food_menu[item]
+            else:
+                price = drink_menu[item]
+            order_summary += f"- {item.capitalize()} : ${price:.2f}\n"
+            total += price
+        order_summary += f"\nTotal: ${total:.2f}"
+        easygui.msgbox(order_summary + "\nThank you! Please wait for your order.")
+    else:
+        easygui.msgbox("You didn't order anything.")
+else:
+    easygui.msgbox("Thank you so much for your time, have a good day!")
+
+
+
+
+
+
